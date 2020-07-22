@@ -1,4 +1,4 @@
-Zoidberg's Medical Assistant.user.js
+Zoidberg's Medical Assistant
 
 Description
 
