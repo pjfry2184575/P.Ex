@@ -32,7 +32,8 @@ const selectors = {
     idle: '[id^=icon62__]',
     offline: '[id^=icon2__]',
     hospital: '[id^=icon15__]',
-    online: '[id^=icon1__]'
+    online: '[id^=icon1__]',
+    memberRow: '.members-list > .table-body'
 };
 
 const statuses = {
@@ -260,22 +261,22 @@ class FactionView {
     }
 
     static async updateHospitalTime() {
-        $('.member-list > li:contains("Hospital")').each((i, j) => {
+        $(`${selectors.memberRow} > li:contains("Hospital")`).each((i, j) => {
             const hospTitle = $(j).find("[id^=icon15__]").attr("title");
             $(j).find(".days").text(hospTitle.substr(-16, 8));
         });
     }
 
     static getHospitalRows() {
-        return $('.member-list > li:contains("Hospital")');
+        return $(`${selectors.memberRow} > li:contains("Hospital")`);
     }
 
     static getRowsWithStatus(status) {
-        return $(`.member-list > li:contains("${status}")`);
+        return $(`${selectors.memberRow} > li:contains("${status}")`);
     }
 
     static getRowsWithIcon(iconSelector) {
-        return $('.member-list').find(iconSelector).parents('li');
+        return $(selectors.memberRow).find(iconSelector).parents('li');
     }
 
     static async toggleWalls(hide) {
@@ -311,7 +312,7 @@ class FactionView {
 
         FactionView.removeDescriptionScrollbar();
 
-        const rows = $('.member-list > li');
+        const rows = $(`${selectors.memberRow} > li`);
         const filter = Filter.fromElements();
         const disabled = Storage.get() || {};
 
@@ -359,14 +360,15 @@ class Filter {
 
 class HospitalUI {
     static updateSummary() {
-        const hiddenOkay = $(`.member-list > li:contains("Okay"):hidden`).length;
-        const hiddenTravelling = $(`.member-list > li:contains("Traveling"):hidden`).length;
-        const hiddenJail = $(`.member-list > li:contains("Jail"):hidden`).length;
-        const hiddenOffline = $(`.member-list > li${selectors.offline}:hidden`).length;
-        const totalHospital = $(`.member-list > li:contains("Hospital"):visible`).length;
-        const totalHidden = hiddenOkay + hiddenTravelling + hiddenJail + hiddenOffline;
-        const visible = $(`.member-list > li:visible`).length;
-        const total = hiddenOkay + hiddenTravelling + hiddenJail + hiddenOffline + visible;
+        const hiddenOkay = $(`${selectors.memberRow} > li:contains("Okay"):hidden`).length;
+        const hiddenTravelling = $(`${selectors.memberRow} > li:contains("Traveling"):hidden`).length;
+        const hiddenJail = $(`${selectors.memberRow} > li:contains("Jail"):hidden`).length;
+        const hiddenOffline = $(`${selectors.memberRow} > li${selectors.offline}:hidden`).length;
+        const hiddenHospital = $(`${selectors.memberRow} > li:contains("Hospital"):hidden`).length;
+        const totalHospital = $(`${selectors.memberRow} > li:contains("Hospital"):visible`).length;
+        const totalHidden = hiddenOkay + hiddenTravelling + hiddenJail + hiddenOffline + hiddenHospital;
+        const visible = $(`${selectors.memberRow} > li:visible`).length;
+        const total = hiddenOkay + hiddenTravelling + hiddenJail + hiddenOffline + hiddenHospital + visible;
 
         $('#tch-hiddenOkay').text(hiddenOkay);
         $('#tch-hiddenTravelling').text(hiddenTravelling);
@@ -492,3 +494,4 @@ if (path === "/factions.php") {
         log = new MobileLogWindow(false);
     }
 }
+console.log('hi');
