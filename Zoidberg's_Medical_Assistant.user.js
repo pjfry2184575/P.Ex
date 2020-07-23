@@ -494,4 +494,3 @@ if (path === "/factions.php") {
         log = new MobileLogWindow(false);
     }
 }
-console.log('hi');
